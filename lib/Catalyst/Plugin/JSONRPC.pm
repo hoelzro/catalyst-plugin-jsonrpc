@@ -5,6 +5,23 @@ our $VERSION = '0.01';
 
 use JSON ();
 
+my $get_attributes;
+
+if($Catalyst::VERSION >= 5.8) {
+    $get_attributes = sub {
+        my ( $class, $method ) = @_;
+
+        return $class->meta->get_method($method)->attributes;
+    };
+} else {
+    $get_attributes = sub {
+        my ( $class, $method ) = @_;
+        $method = $class->can($method);
+        return [] unless $method;
+        return attributes::get($method);
+    };
+}
+
 sub json_rpc {
     my $c = shift;
     my $attrs = @_ > 1 ? {@_} : $_[0];
@@ -32,7 +49,7 @@ sub json_rpc {
         if (my $code = $class->can($method)) {
 
             my $remote;
-            my $attrs = attributes::get($code) || [];
+            my $attrs = $get_attributes->($class, $method) || [];
             for my $attr (@$attrs) {
                 $remote++ if $attr eq 'Remote';
             }
