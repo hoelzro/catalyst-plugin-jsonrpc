@@ -1,4 +1,4 @@
-package TestApp::C::JSON;
+package TestApp::Controller::JSON;
 
 use strict;
 use base 'Catalyst::Controller';
