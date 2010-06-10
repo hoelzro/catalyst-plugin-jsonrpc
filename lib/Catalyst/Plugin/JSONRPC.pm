@@ -7,6 +7,7 @@ use JSON ();
 
 my $get_attributes;
 
+require Catalyst;
 if($Catalyst::VERSION >= 5.8) {
     $get_attributes = sub {
         my ( $class, $method ) = @_;
