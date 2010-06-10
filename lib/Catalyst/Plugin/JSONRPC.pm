@@ -13,11 +13,11 @@ sub json_rpc {
     my $content = do { local $/; <$body> };
 
     my $req;
-    eval { $req = JSON::jsonToObj($content) };
+    eval { $req = JSON::from_json($content) };
     if ($@ || !$req) {
         $c->log->debug(qq/Invalid JSON-RPC request: "$@"/);
         $c->res->content_type('text/javascript+json');
-        $c->res->body(JSON::objToJson({
+        $c->res->body(JSON::to_json({
             result => undef,
             error  => 'Invalid request',
         }));
@@ -70,7 +70,7 @@ sub json_rpc {
     }
 
     $c->res->content_type('text/javascript+json');
-    $c->res->body(JSON::objToJson({
+    $c->res->body(JSON::to_json({
         result => $res,
         error  => undef,
         id     => $req->{id},
