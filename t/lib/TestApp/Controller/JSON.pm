@@ -23,4 +23,27 @@ sub add : Remote {
     return $a + $b;
 }
 
+sub inform : Remote {
+    my ( $self, $c ) = @_;
+    # no op!
+}
+
+sub subtract : Remote {
+    my ( $self, $c, %params ) = @_;
+
+    return $params{minuend} - $params{subtrahend};
+}
+
+sub tunnels : Remote {
+    my ( $self, $c ) = @_;
+
+    return [qw/tom dick harry/];
+}
+
+sub fail : Remote {
+    my ( $self, $c ) = @_;
+
+    die "fail";
+}
+
 1;
